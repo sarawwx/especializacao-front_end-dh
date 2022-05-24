@@ -1,136 +1,65 @@
 // Aqui devemos criar nosso contexto e nosso provider.
-import { createContext, useReducer } from 'react'
+import { createContext, useReducer } from "react";
 
-export const FormularioContext = createContext()
-
-const reducer = (state, action)=>{
-  switch(action.type){
-    case "nome":
-      return{
-        ...state,
-        nome: action.payload.nome
-      }
-    case "sobrenome":
-      return{
-        ...state,
-        sobrenome: action.payload.sobrenome
-      }
-    case "email":
-      return{
-        ...state,
-        email: action.payload.email
-      }
-    case "nomePokemon":
-    return{
-      ...state,
-      nomePokemon: action.payload.nomePokemon
-    }
-    case "tipoPokemon":
-      return{
-        ...state,
-        tipoPokemon: action.payload.tipoPokemon
-      }
-    case "elementoPokemon":
-      return{
-        ...state,
-        elementoPokemon: action.payload.elementoPokemon
-      }
-    case "alturaPokemon":
-      return{
-        ...state,
-        alturaPokemon: action.payload.alturaPokemon
-      }
-    case "idadePokemon":
-      return{
-        ...state,
-        idadePokemon: action.payload.idadePokemon
-      }
-    case "ATUALIZAR":
-      return{
-        ...state,
-        nome: action.payload.nome,
-        sobrenome: action.payload.sobrenome,
-        email: action.payload.email,
-        nomePokemon: action.payload.nomePokemon,
-        tipoPokemon: action.payload.tipoPokemon,
-        elementoPokemon: action.payload.elementoPokemon,
-        alturaPokemon: action.payload.alturaPokemon,
-        idadePokemon: action.payload.idadePokemon
-      }
-    case "ATUALIZAR_TREINADOR":
-      return{
-        ...state,
-        nome: action.payload.nome,
-        sobrenome: action.payload.sobrenome,
-        email: action.payload.email,
-      }
-    case "ATUALIZAR_POKEMON":
-      return{
-        ...state,
-        nomePokemon: action.payload.nomePokemon,
-        tipoPokemon: action.payload.tipoPokemon,
-        elementoPokemon: action.payload.elementoPokemon,
-        alturaPokemon: action.payload.alturaPokemon,
-        idadePokemon: action.payload.idadePokemon
-      }
-    default:
-      return state
-  }
-}
-
+export const contextoFormulario = createContext();
 const initialState = {
-  nome: "",
-  sobrenome: "",
-  email: "",
-  nomePokemon: "",
-  tipoPokemon: "",
-  elementoPokemon: "",
-  alturaPokemon: "",
-  idadePokemon: "" 
-}
+    treinador: {
+      nome: "",
+      apelido: "",
+      email: "",
+    },
+    pokemon: {
+      nomePokemon: "",
+      tipoPokemon: "",
+      elementoPokemon: "",
+      alturaPokemon: "",
+      idadePokemon: "",
+    },
+  };
 
+const reducer = (state, action) => {
+  switch (action.type) {
+      case "atualizar_treinador":
+          return {
+                ...state,
+                treinador: {
+                    ...state.treinador,
+                    ...action.payload,
+          },
+  };
+    case "atualizar_pokemon":
+        return {
+            ...state,
+            pokemon: {
+                ...state.pokemon,
+                ...action.payload,
+        },
+    };
+    default:
+        return state;
+    }
+};
 
-const FormularioContextProvider = ({children}) =>{
+const ContextoFormularioProvider = ({ children }) => {
 
-  const [state, dispatch] = useReducer(reducer, initialState )
+    const [form, dispatch] = useReducer(reducer, initialState);
 
-  // const [ocorrencias, setOcorrencias] = useState({
-  //   nome: "",
-  //   sobrenome: "",
-  //   email: "",
-  //   nomePokemon: "",
-  //   tipoPokemon: "",
-  //   elementoPokemon: "",
-  //   alturaPokemon: "",
-  //   idadePokemon: "" 
-  // }) 
+    const displayOnBlur = (type, inputInfo) => {
+        const {campo, valor} = inputInfo;
 
+        dispatch({
+            type,
+            payload: {
+                [campo]: valor,
+            },
+        });
+    };
 
-  const adicionarOcorrencia = (novaOcorrencia)=>{
+  return (
+    <contextoFormulario.Provider value={{ form, displayOnBlur }}>
+      {children}
+    </contextoFormulario.Provider>
+  );
+};
 
-
-
-    dispatch(novaOcorrencia)
-
-    // setOcorrencias({
-    //   ...ocorrencias,
-    //   [input]: valor
-    // })
-  }
-
-
-  return(
-    <>
-      <FormularioContext.Provider
-      value={{
-        state,
-        adicionarOcorrencia
-      }}>
-        {children}
-      </FormularioContext.Provider>
-    </>
-  )
-
-}
-
-export default FormularioContextProvider
+export default ContextoFormularioProvider;

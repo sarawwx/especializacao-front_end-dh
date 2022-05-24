@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
-import { FormularioContext } from "../../context/contextoFormulario"
+import {useContext} from "react";
+import {contextoFormulario} from "../../context/contextoFormulario";
 
 const Detalhe = () => {
-  // Aqui devemos pegar os dados do formulário para podermos mostrá-lo em a visualização.
-  const {state} = useContext(FormularioContext)
+  const {form} = useContext(contextoFormulario);
 
+  const {nome, sobrenome, email} = form?.treinador;
+  const {nomePokemon, tipoPokemon, elementoPokemon, alturaPokemon, idadePokemon} = form?.pokemon;
+  
   return (
     <div className="detalhe-formulario">
       <div className="cabecalho">
@@ -13,20 +15,19 @@ const Detalhe = () => {
       <section className="dados-cliente">
         <h4>Dados do Treinador</h4>
         <div className="lista">
-
-          <p>Nome: {state.nome ? state.nome : ""}</p>
-          <p>Sobrenome: {state.sobrenome ? state.sobrenome : ""}</p>
-          <p>Email: {state.email ? state.email : ""}</p>
+          <p>Nome: {nome}</p>
+          <p>Sobrenome: {sobrenome}</p>
+          <p>Email: {email}</p>
         </div>
       </section>
       <section className="dados-cliente">
         <h4>Dados do Pokémon</h4>
         <div className="lista">
-          <p>Nome: {state.nomePokemon ? state.nomePokemon : ""}</p>
-          <p>Tipo: {state.tipoPokemon ? state.tipoPokemon : ""}</p>
-          <p>Elemento: {state.elementoPokemon ? state.elementoPokemon : ""}</p>
-          <p>Altura: {state.alturaPokemon ? state.alturaPokemon : ""}</p>
-          <p>Idade: {state.idadePokemon ? state.idadePokemon : ""}</p>
+          <p>Nome: {nomePokemon}</p>
+          <p>Tipo: {tipoPokemon}</p>
+          <p>Elemento: {elementoPokemon}</p>
+          <p>Altura: {alturaPokemon}</p>
+          <p>Idade: {idadePokemon}</p>
         </div>
       </section>
       <button
